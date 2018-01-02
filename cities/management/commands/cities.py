@@ -458,7 +458,13 @@ class Command(BaseCommand):
         del self.region_index
 
     def import_city(self):
-        self.download('city')
+        if 'filenames' in settings.files['city']:
+            filenames = settings.files['city']['filenames']
+            for index in range(len(filenames)):
+                self.download('city', key_index=index)
+        else:
+            self.download('city')
+
         data = self.get_data('city')
 
         total = sum(1 for _ in data)
